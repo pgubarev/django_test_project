@@ -6,20 +6,14 @@ from rest_framework.routers import DefaultRouter
 from services.views import (
     TopicViewSet,
     SubscriptionViewSet,
-    AddSubscribeView,
-    UnsubscribeView,
-    ConfirmSubscribeView,
-    AutoConfirmSubscribeView
+    SubscriptionAPIView,
 )
 
 
 router = DefaultRouter()
-router.register('topics', TopicViewSet)
-router.register('subscriptions', SubscriptionViewSet)
-router.register('subscribe', AddSubscribeView, basename='subscribe')
-router.register('confirm', ConfirmSubscribeView, basename='confirm')
-router.register('unsubscribe', UnsubscribeView, basename='unsubscribe')
-router.register('auto.confirm', AutoConfirmSubscribeView, basename='auto_confirm')
+router.register('trace/topics', TopicViewSet)
+router.register('trace/subscriptions', SubscriptionViewSet)
+router.register('subscriptions', SubscriptionAPIView, basename='subscriptions')
 
 urlpatterns = [
     path('api/', include(router.urls)),

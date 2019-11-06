@@ -23,11 +23,11 @@ class SubscriptionSerializer(serializers.ModelSerializer):
         model = Subscription
 
 
-class SubscriptionConfirmVerifier(serializers.Serializer):
+class TokenVerifySerializer(serializers.Serializer):
     token = serializers.UUIDField(format='hex_verbose')
 
 
-class SubscriptionCreateVerifier(serializers.ModelSerializer):
+class SubCreateVerifySerializer(serializers.ModelSerializer):
 
     endpoint = serializers.URLField(
         allow_blank=False,
@@ -42,7 +42,7 @@ class SubscriptionCreateVerifier(serializers.ModelSerializer):
         fields = ['topic', 'endpoint']
 
 
-class SubscriptionRequestVerifer(serializers.Serializer):
+class SubRequestVerifySerializer(serializers.Serializer):
     token = serializers.UUIDField(format='hex_verbose')
     subscription_url = serializers.URLField()
     type = serializers.ChoiceField(choices=[TYPE_SUB_CONFIRMATION,])
