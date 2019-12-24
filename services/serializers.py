@@ -10,7 +10,7 @@ class TopicSerializer(serializers.ModelSerializer):
     email = serializers.CharField(source='owner.email', read_only=True)
 
     class Meta:
-        fields = ['topic', 'email']
+        fields = ('topic', 'email',)
         model = Topic
 
 
@@ -19,7 +19,7 @@ class SubscriptionSerializer(serializers.ModelSerializer):
     topic = serializers.CharField(source='topic.topic', read_only=True)
 
     class Meta:
-        fields = ['token', 'topic', 'protocol', 'endpoint', 'status', 'created_timestamp']
+        fields = ('token', 'topic', 'protocol', 'endpoint', 'status', 'created_timestamp',)
         model = Subscription
 
 
@@ -39,10 +39,10 @@ class SubCreateVerifySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Subscription
-        fields = ['topic', 'endpoint']
+        fields = ('topic', 'endpoint',)
 
 
 class SubRequestVerifySerializer(serializers.Serializer):
     token = serializers.UUIDField(format='hex_verbose')
     subscription_url = serializers.URLField()
-    type = serializers.ChoiceField(choices=[TYPE_SUB_CONFIRMATION,])
+    type = serializers.ChoiceField(choices=[TYPE_SUB_CONFIRMATION, ])

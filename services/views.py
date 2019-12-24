@@ -34,10 +34,11 @@ class SubscriptionViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
 class SubscriptionAPIView(viewsets.ViewSet):
     serializer_class = SubCreateVerifySerializer
 
-    @action(detail=False, methods=['post'], url_path='subscribe')
+    @action(detail=False, methods=['post'], url_path='subscribe',
+            serializer_class=SubCreateVerifySerializer)
     def subscribe(self, request, format=None):
 
-        serializer = SubCreateVerifySerializer(data=request.data)
+        serializer = self.serializer_class(data=request.data)
 
         if not serializer.is_valid():
             response_data = {'message': MESSAGE_INVALID_DATA}
@@ -61,10 +62,11 @@ class SubscriptionAPIView(viewsets.ViewSet):
 
         return Response(response_data, status=HTTP_201_CREATED)
 
-    @action(detail=True, methods=['put'], url_path='confirm')
+    @action(detail=True, methods=['put'], url_path='confirm',
+            serializer_class=TokenVerifySerializer)
     def confirm(self, request, pk, format=None):
 
-        serializer = TokenVerifySerializer(data=request.data)
+        serializer = self.serializer_class(data=request.data)
 
         if serializer.is_valid(raise_exception=False):
             try:
@@ -73,15 +75,15 @@ class SubscriptionAPIView(viewsets.ViewSet):
                 return Response({'message': MESSAGE_INVALID_DATA}, status=HTTP_400_BAD_REQUEST)
 
             if sub.status == STATUS_CONFIRMED:
-                return Response({'message': MESSAGE_ALREADY_CONFIRMED}, status=HTTP_200_OK)
+                return Response({'message': MESSAGE_ALREADY_CONFIRMED})
 
             if sub.status == STATUS_CANCELLED:
-                return Response({'message': MESSAGE_CANT_CONFIRM}, status=HTTP_200_OK)
+                return Response({'message': MESSAGE_CANT_CONFIRM})
 
             sub.status = STATUS_CONFIRMED
             sub.save(update_fields=['status'])
 
-            return Response({'message': MESSAGE_CONFIRMED}, status=HTTP_200_OK)
+            return Response({'message': MESSAGE_CONFIRMED})
 
         return Response({'message': MESSAGE_NOT_FOUND}, status=HTTP_400_BAD_REQUEST)
 
@@ -95,10 +97,11 @@ class SubscriptionAPIView(viewsets.ViewSet):
         sub.delete()
         return Response({'message': MESSAGE_DELETED}, status=HTTP_204_NO_CONTENT)
 
-    @action(detail=False, methods=['post'], url_path='auto.confirm')
+    @action(detail=False, methods=['post'], url_path='auto.confirm',
+            serializer_class=SubRequestVerifySerializer)
     def auto_confirm(self, request, format=None):
 
-        serializer = SubRequestVerifySerializer(data=request.data)
+        serializer = self.serializer_class(data=request.data)
 
         if serializer.is_valid():
 
