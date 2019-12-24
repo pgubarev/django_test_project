@@ -85,7 +85,7 @@ DATABASES = {
         'NAME': 'signals',
         'USER': 'postgres',
         'HOST': 'localhost',
-        'PORT': 7777,
+        'PORT': 5432,
     }
 }
 
