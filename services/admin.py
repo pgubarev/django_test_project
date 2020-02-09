@@ -19,7 +19,7 @@ class SubscriptionAdmin(admin.ModelAdmin):
 
     def save_model(self, request, obj, form, change):
         obj.protocol = PROTOCOL_HTTPS if obj.endpoint.startswith(PROTOCOL_HTTPS) else PROTOCOL_HTTP
-        super.save_model(request, obj, form, change)
+        super().save_model(request, obj, form, change)
 
 
 admin.site.register(Topic, TopicAdmin)
