@@ -108,6 +108,24 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'tasks_handler': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': '/Users/work/log/signals/tasks.log',
+        },
+    },
+    'loggers': {
+        'tasks': {
+            'handlers': ['tasks_handler'],
+            'level': 'DEBUG',
+            'propagate': True
+        },
+    }
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
