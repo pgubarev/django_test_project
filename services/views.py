@@ -1,12 +1,12 @@
 from rest_framework import viewsets, mixins
-from rest_framework.decorators import action
+from rest_framework.decorators import action, permission_classes
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.status import (
     HTTP_201_CREATED,
     HTTP_202_ACCEPTED,
     HTTP_204_NO_CONTENT,
     HTTP_400_BAD_REQUEST,
-    HTTP_200_OK,
 )
 
 from services.consts import *
@@ -21,9 +21,14 @@ from services.serializers import (
 from services.utils import *
 
 
+@permission_classes([IsAuthenticated])
 class TopicViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
     queryset = Topic.objects.all()
     serializer_class = TopicSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        return self.queryset.filter(owner=user)
 
 
 class SubscriptionViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
